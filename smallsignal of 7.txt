@@ -1,0 +1,102 @@
+j=0;
+myIR0=0;myIR1=0;myIR2=0;myIR3=0;myIR4=0;myIR5=0;myIR6=0;
+myIR_i0=0;myIR_i1=0;myIR_i2=0;myIR_i3=0;myIR_i4=0;myIR_i5=0;myIR_i6=0;myIR_i7=0;
+st_std=std(st);
+for i0=-3:1:3
+    for i1=-5:1:5
+        for i2=-5:1:7
+            for i3=-5:1:14
+                for i4=-5:1:5
+                    for i5=-3:1:3
+                        for i6=-2:0.3:2
+                            i=diag([i0 i1 i2 i3 i4 i5 i6 1]);
+                            k=(k1'*i)';
+                            Y=(Vxyz*k);
+                            myYreal=Unmdata'-Y;
+                            myYreal_lvbo=filtfilt(b,a,myYreal); 
+                            IR=st_std/std(myYreal_lvbo);
+                            if IR==inf||isnan(IR)==1
+                               IR=0;
+                            elseif IR >= myIR6 && IR~=inf && isnan(IR)~=1
+                                myIR6=IR;
+                                myIR_i=[i0 i1 i2 i3 i4 i5 i6 1];
+                            else
+                                break
+                            end
+                        end
+                        if myIR6 >= myIR5
+                            myIR_i5_0=myIR_i(6);
+                            myIR_i5_1=myIR_i(7);
+                            myIR5=myIR6;
+                            myIR6=0;
+                        else
+                            break
+                        end
+                    end
+                    if myIR5 >= myIR4
+                        myIR_i4_0=myIR_i(5);
+                        myIR_i4_1=myIR_i5_0;
+                        myIR_i4_2=myIR_i5_1;
+                        myIR4=myIR5;
+                        myIR5=0;myIR6=0;
+                    else
+                        break
+                    end
+                end
+                if myIR4 >= myIR3
+                    myIR_i3_0=myIR_i(4);
+                    myIR_i3_1=myIR_i4_0;
+                    myIR_i3_2=myIR_i4_1;
+                    myIR_i3_3=myIR_i4_2;
+                    myIR3=myIR4;
+                    myIR4=0;myIR5=0;myIR6=0;
+                else
+%                     myIR_i(4)=myIR_i(4)-1;
+                    break
+                end
+            end
+            if myIR3 >= myIR2
+                myIR_i2_0=myIR_i(3);
+                myIR_i2_1=myIR_i3_0;
+                myIR_i2_2=myIR_i3_1;
+                myIR_i2_3=myIR_i3_2;
+                myIR_i2_4=myIR_i3_3;
+                myIR2=myIR3;
+                myIR3=0;myIR4=0;myIR5=0;myIR6=0;
+            else
+%                 myIR_i(3)=myIR_i(3)-1;
+                break
+            end
+        end
+       if myIR2 >= myIR1
+           myIR_i1_0=myIR_i(2);
+           myIR_i1_1=myIR_i2_0;
+           myIR_i1_2=myIR_i2_1;
+           myIR_i1_3=myIR_i2_2;
+           myIR_i1_4=myIR_i2_3;
+           myIR_i1_5=myIR_i2_4;
+            myIR1=myIR2;
+            myIR2=0;myIR3=0;myIR4=0;myIR5=0;myIR6=0;
+       else
+%             myIR_i(2)=myIR_i(2)-1;
+            break
+        end
+    end
+    if myIR1 >= myIR0
+        myIR_i0_0=myIR_i(1);
+        myIR_i0_1=myIR_i1_0;
+        myIR_i0_2=myIR_i1_1;
+        myIR_i0_3=myIR_i1_2;
+        myIR_i0_4=myIR_i1_3;
+        myIR_i0_5=myIR_i1_4;
+        myIR_i0_6=myIR_i1_5;
+        myIR0=myIR1;
+        myIR1=0;myIR2=0;myIR3=0;myIR4=0;myIR5=0;myIR6=0;
+    else
+%         myIR_i(1)=myIR_i(1)-1;
+        break
+    end
+end
+
+myIR0
+myIR_i=[myIR_i0_0 myIR_i0_1 myIR_i0_2 myIR_i0_3 myIR_i0_4 myIR_i0_5 myIR_i0_6 1]
